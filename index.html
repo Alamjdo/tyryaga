@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Тюряга</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ===== RESET & BASE ===== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: #0a0e1a;
+        color: #e8edf5;
+        min-height: 100vh;
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #141c2b;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1e3a6b;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #2a5a9a;
+      }
+
+      /* ===== HEADER ===== */
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: linear-gradient(135deg, #0b1120 0%, #141c2b 100%);
+        border-bottom: 2px solid #1a2d4a;
+        padding: 16px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .logo-icon {
+        width: 44px;
+        height: 44px;
+        background: radial-gradient(circle at 30% 30%, #1a4f8a, #0a1e3a);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 18px;
+        color: #f0c040;
+        border: 1px solid #2a5a9a;
+        box-shadow: 0 0 20px rgba(26, 79, 138, 0.3);
+      }
+      .logo-text {
+        font-weight: 700;
+        font-size: 22px;
+        letter-spacing: 1px;
+        background: linear-gradient(90deg, #f0f4ff, #8ab4f8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .logo-text span {
+        font-weight: 300;
+        color: #5a7a9a;
+        -webkit-text-fill-color: #5a7a9a;
+      }
+      .header-stats {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 14px;
+        color: #8ab4f8;
+      }
+      .header-stats strong {
+        color: #f0f4ff;
+        font-size: 18px;
+      }
+
+      /* ===== SEARCH ===== */
+      .search-section {
+        background: #0f1728;
+        padding: 20px 32px 24px;
+        border-bottom: 1px solid #1a2d4a;
+      }
+      .search-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .search-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .search-input-wrap {
+        flex: 1;
+        min-width: 200px;
+        position: relative;
+      }
+      .search-input-wrap input {
+        width: 100%;
+        padding: 14px 18px 14px 48px;
+        border-radius: 12px;
+        border: 1px solid #1a2d4a;
+        background: #0a0e1a;
+        color: #e8edf5;
+        font-size: 15px;
+        transition: all 0.3s;
+        font-family: inherit;
+      }
+      .search-input-wrap input::placeholder {
+        color: #3a4a6a;
+      }
+      .search-input-wrap input:focus {
+        outline: none;
+        border-color: #2a5a9a;
+        box-shadow: 0 0 0 3px rgba(42, 90, 154, 0.25);
+        background: #0d1424;
+      }
+      .search-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #3a5a7a;
+        font-size: 18px;
+        pointer-events: none;
+      }
+      .filter-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .filter-btn {
+        padding: 10px 20px;
+        border-radius: 10px;
+        border: 1px solid #1a2d4a;
+        background: transparent;
+        color: #8ab4f8;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.25s;
+        font-family: inherit;
+      }
+      .filter-btn:hover {
+        border-color: #2a5a9a;
+        background: rgba(42, 90, 154, 0.15);
+      }
+      .filter-btn.active {
+        background: #1a3a6a;
+        border-color: #2a5a9a;
+        color: #f0f4ff;
+        box-shadow: 0 0 20px rgba(42, 90, 154, 0.2);
+      }
+      .clear-filter {
+        padding: 10px 16px;
+        border-radius: 10px;
+        border: 1px solid #3a1a2a;
+        background: transparent;
+        color: #b06a7a;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.25s;
+        font-family: inherit;
+      }
+      .clear-filter:hover {
+        border-color: #6a2a3a;
+        background: rgba(106, 42, 58, 0.15);
+      }
+
+      /* ===== CARDS ===== */
+      .cards-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 28px 32px 60px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+        gap: 24px;
+      }
+      .card {
+        background: linear-gradient(145deg, #111b2e, #0d1424);
+        border-radius: 16px;
+        border: 1px solid #1a2d4a;
+        overflow: hidden;
+        transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        display: flex;
+        flex-direction: column;
+      }
+      .card:hover {
+        transform: translateY(-6px);
+        border-color: #2a5a9a;
+        box-shadow:
+          0 12px 40px rgba(0, 0, 0, 0.6),
+          0 0 30px rgba(42, 90, 154, 0.08);
+      }
+      .card-body {
+        display: flex;
+        padding: 20px;
+        gap: 18px;
+        flex: 1;
+      }
+      .card-image {
+        flex-shrink: 0;
+        width: 110px;
+        height: 140px;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #0a0e1a;
+        border: 1px solid #1a2d4a;
+      }
+      .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .card-image .no-photo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: #3a4a6a;
+        font-size: 12px;
+        background: #0d1424;
+        text-align: center;
+        padding: 6px;
+      }
+      .card-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 0;
+      }
+      .card-id {
+        font-size: 12px;
+        color: #3a5a7a;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+      }
+      .card-name {
+        font-size: 17px;
+        font-weight: 700;
+        color: #f0f4ff;
+        line-height: 1.2;
+      }
+      .card-detail {
+        font-size: 13px;
+        color: #8ab4f8;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .card-detail .label {
+        color: #4a6a8a;
+        font-weight: 400;
+      }
+      .card-detail .value {
+        color: #c0d8f0;
+        font-weight: 500;
+      }
+      .card-description {
+        font-size: 13px;
+        color: #8a9ab0;
+        line-height: 1.5;
+        margin-top: 4px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .card-footer {
+        padding: 12px 20px;
+        border-top: 1px solid #0f1a2e;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        background: rgba(0, 0, 0, 0.2);
+        font-size: 12px;
+        color: #4a6a8a;
+      }
+      .badge {
+        padding: 3px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+      }
+
+      /* ——— НОВЫЕ ЦВЕТА ДЛЯ ВАШЕЙ ШКАЛЫ ——— */
+      .badge-safe {
+        background: #1a3a2a;
+        color: #6aba7a;
+        border: 1px solid #2a5a3a;
+      }
+      .badge-dangerous {
+        background: #3a2a1a;
+        color: #e8b84a;
+        border: 1px solid #5a3a2a;
+      }
+      .badge-extreme {
+        background: #4a1a1a;
+        color: #f06a6a;
+        border: 1px solid #6a2a2a;
+      }
+
+      .card-source {
+        font-size: 11px;
+        color: #4a6a7a;
+        word-break: break-all;
+      }
+      .card-source a {
+        color: #6a9ad8;
+        text-decoration: none;
+      }
+      .card-source a:hover {
+        text-decoration: underline;
+      }
+
+      /* ===== EMPTY ===== */
+      .empty-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 80px 20px;
+        color: #4a6a8a;
+      }
+      .empty-state h3 {
+        font-size: 22px;
+        margin-bottom: 8px;
+        color: #6a8aaa;
+      }
+      .empty-state p {
+        font-size: 15px;
+        color: #3a5a7a;
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 768px) {
+        .header {
+          padding: 12px 16px;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 8px;
+        }
+        .header-stats {
+          justify-content: space-between;
+          font-size: 12px;
+        }
+        .search-section {
+          padding: 14px 16px 18px;
+        }
+        .search-row {
+          flex-direction: column;
+        }
+        .filter-group {
+          justify-content: flex-start;
+        }
+        .filter-btn {
+          padding: 8px 14px;
+          font-size: 12px;
+        }
+        .cards-container {
+          padding: 16px;
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+        .card-body {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+        .card-image {
+          width: 120px;
+          height: 150px;
+        }
+        .card-footer {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+        .logo-text {
+          font-size: 18px;
+        }
+      }
+      @media (max-width: 480px) {
+        .cards-container {
+          padding: 10px;
+        }
+        .card-body {
+          padding: 14px;
+        }
+        .card-image {
+          width: 100px;
+          height: 130px;
+        }
+        .card-name {
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon">◈</div>
+        <div class="logo-text">ТЮРЯГА <span>| База данных</span></div>
+      </div>
+      <div class="header-stats">
+        <span>Всего записей: <strong id="totalCount">0</strong></span>
+        <span>Показано: <strong id="visibleCount">0</strong></span>
+      </div>
+    </header>
+
+    <!-- ===== SEARCH ===== -->
+    <section class="search-section">
+      <div class="search-container">
+        <div class="search-row">
+          <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Поиск по имени, статье, описанию..."
+              autocomplete="off"
+            />
+          </div>
+          <div class="filter-group" id="filterGroup">
+            <button class="filter-btn active" data-filter="all">Все</button>
+            <button class="filter-btn" data-filter="Безопасен">Безопасен</button>
+            <button class="filter-btn" data-filter="Опасен">Опасен</button>
+            <button class="filter-btn" data-filter="Особо опасен">Особо опасен</button>
+            <button class="clear-filter" id="clearFilter">✕ Сбросить</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CARDS ===== -->
+    <main class="cards-container" id="cardsContainer"></main>
+
+    <script>
+      // ================================================================
+      // 1. ДАННЫЕ — ВСЕ 51 ЗАПИСЬ С НОВЫМИ СТАТУСАМИ
+      // ================================================================
+      const records = [
+        { id: 1, name: "Анисимов Александр", status: "Особо опасен", description: "Руководитель частных клиник, заключил с больницей 30 фиктивных контрактов на профосмотры на сумму более 15 млн руб.", article: "Мошенничество, получение и дача взятки, злоупотребление должностными полномочиями", place: "Архангельск", source: "bc2bc.tv29.ru" },
+        { id: 2, name: "Жигалов Сергей Николаевич", status: "Опасен", description: "Бывший главврач горбольницы № 6, получал взятки в виде оплаты банкетов на 122 тыс. руб.", article: "Мошенничество, получение и дача взятки, злоупотребление должностными полномочиями", place: "Архангельск", source: "bc2bc.tv29.ru" },
+        { id: 3, name: "Медведев Сергей", status: "Опасен", description: "Заведующий центром профпатологии, утверждал фиктивные медзаключения, получал взятки (325 тыс. руб.)", article: "Мошенничество, получение и дача взятки, злоупотребление должностными полномочиями", place: "Архангельск", source: "bc2bc.tv29.ru" },
+        { id: 4, name: "Усков Антон", status: "Опасен", description: "Начальник транспортного цеха МП «Горводоканал», получал взятки на 132 тыс. руб. за использование техники", article: "Получение взятки", place: "Котлас", source: "arh.mk.ru" },
+        { id: 5, name: "Берников Александр", status: "Опасен", description: "Начальник цеха КНС, получал взятку в размере 200 тыс. руб.", article: "Получение взятки", place: "Котлас", source: "arh.mk.ru" },
+        { id: 6, name: "Чечерин Евгений", status: "Особо опасен", description: "Директор МП «Горводоканал», получил взятки на сумму более 10 млн руб. от бизнесменов и поставщиков", article: "Получение взятки в особо крупном размере (ч. 6 ст. 290 УК РФ)", place: "Котлас", source: "riamo.ru" },
+        { id: 7, name: "Герштанский Александр", status: "Особо опасен", description: "Бывший министр здравоохранения, обвиняется в получении взятки в особо крупном размере и злоупотреблении полномочиями", article: "ч. 3 ст. 285 УК РФ, ч. 6 ст. 290 УК РФ", place: "Архангельск", source: "vesti.ru" },
+        { id: 8, name: "Шушков Валерий", status: "Опасен", description: "Гендиректор ООО «ЭкоИнтегратор», обвиняется в хищении бюджетных средств и даче взятки", article: "Мошенничество, дача взятки", place: "Архангельск", source: "pomorie.ru" },
+        { id: 9, name: "Мамаев Олег", status: "Особо опасен", description: "Бенефициар ООО «ЭкоИнтегратор», организовал схему с завышением объемов вывезенных отходов, хищение более 380 млн руб.", article: "Мошенничество, дача взяток, отмывание денег", place: "Архангельск", source: "bclass.ru" },
+        { id: 10, name: "Шаповалов Кирилл", status: "Особо опасен", description: "Бывший замминистра природных ресурсов, участвовал в схеме «ЭкоИнтегратора» по хищению более 380 млн руб.", article: "Мошенничество, дача взяток, отмывание денег", place: "Архангельск", source: "bclass.ru" },
+        { id: 11, name: "Лопанов Павел", status: "Особо опасен", description: "Бывший руководитель ФГУП «Спецстрой», обвиняется в получении взятки в 1,5 млн руб.", article: "Получение взятки в особо крупном размере", place: "Архангельск", source: "gvsu.gov.ru" },
+        { id: 12, name: "Усс Олег", status: "Особо опасен", description: "Бывший руководитель ФГУП «Спецстрой», обвиняется в получении взятки в 1,5 млн руб.", article: "Получение взятки в особо крупном размере", place: "Архангельск", source: "gvsu.gov.ru" },
+        { id: 13, name: "Родионов Сергей", status: "Особо опасен", description: "Бывший глава УФНС, вымогал и получил взятку в 8,9 млн руб. за снижение штрафов", article: "Получение взятки (ч. 6 ст. 290 УК РФ)", place: "Архангельск", source: "sledcom.ru" },
+        { id: 14, name: "Шилкин Григорий", status: "Особо опасен", description: "Экс-депутат Госдумы, продал 38 автомобилей предприятия по цене в 10 раз ниже рыночной, ущерб более 23 млн руб.", article: "ч. 4 ст. 160 УК РФ (растрата в особо крупном размере)", place: "Архангельск", source: "interfax-russia.ru" },
+        { id: 15, name: "Шевцов Владислав (Вадос)", status: "Особо опасен", description: "Бывший замглавы Архангельска, получил взятку около 4 млн руб. за покровительство предпринимателю", article: "ч. 6 ст. 290 УК РФ", place: "Архангельск", source: "tass.ru" },
+        { id: 16, name: "Донской Александр", status: "Опасен", description: "Бывший мэр Архангельска, осужден за использование бюджетных денег на охрану и незаконное предпринимательство", article: "Злоупотребление служебным положением, незаконное предпринимательство", place: "Архангельск", source: "arhcity.ru" },
+        { id: 17, name: "Мосеев Иван", status: "Опасен", description: "Признан виновным в унижении достоинства группы лиц по национальному признаку, приговорен к штрафу 100 тыс. руб.", article: "ч. 1 ст. 282 УК РФ", place: "Архангельск", source: "bclass.ru" },
+        { id: 18, name: "Фёдорова Юлия Николаевна", status: "Опасен", description: "Учредитель ООО «Трест столовых», подозревается в уклонении от уплаты налогов и хищении бюджетных средств", article: "ч. 2 ст. 199, ч. 4 ст. 159 УК РФ", place: "Архангельск", source: "rg.ru" },
+        { id: 19, name: "Толстикова Валентина", status: "Опасен", description: "Экс-директор культурного центра, не проверила работы по плитке, ущерб бюджету 2 млн руб.", article: "ч. 3 ст. 285 УК РФ", place: "Верхнетоемский р-н", source: "региональные СМИ" },
+        { id: 20, name: "Необутова Наталья", status: "Опасен", description: "Заместитель начальника отдела РЖД, сливала коммерческую информацию за деньги", article: "Получение взятки", place: "Архангельск", source: "arhangelsk.bezformata.com" },
+        { id: 21, name: "Короткова Людмила", status: "Безопасен", description: "Распространяла листовки и призывала к отказу от электронных дневников. Внесена в список экстремистов.", article: "Дискредитация ВС РФ", place: "Мирный", source: "ovd.info" },
+        { id: 22, name: "Головань (гендиректор)", status: "Опасен", description: "Гендиректор ООО «Форвард» платил «абонентскую плату» в СРО за фиктивное членство (44 тыс. руб.)", article: "Коммерческий подкуп", place: "Новодвинск", source: "региональные СМИ" },
+        { id: 23, name: "Меньшиков (директор)", status: "Опасен", description: "Директор ООО «М-Сервис», осужден в рамках дела о поставке некачественной плитки", article: "Мошенничество", place: "Верхнетоемский р-н", source: "региональные СМИ" },
+        { id: 24, name: "Гендиректор стройфирмы", status: "Особо опасен", description: "Хищение более 22 млн руб. при капремонте домов, работы не выполнены", article: "ч. 4, 5 ст. 159, ч. 1 ст. 187, п. «б» ч. 4 ст. 174.1 УК РФ", place: "Архангельск", source: "interfax-russia.ru" },
+        { id: 25, name: "Финансовый директор стройфирмы", status: "Особо опасен", description: "Хищение более 22 млн руб. при капремонте домов", article: "ч. 4, 5 ст. 159, ч. 1 ст. 187, п. «б» ч. 4 ст. 174.1 УК РФ", place: "Архангельск", source: "interfax-russia.ru" },
+        { id: 26, name: "Экс-сотрудник лесничества", status: "Опасен", description: "Предложил предпринимателю обеспечить победу в аукционе за вознаграждение", article: "Получение взятки в крупном размере", place: "Архангельская область", source: "arh.mk.ru" },
+        { id: 27, name: "Представитель подрядчика", status: "Особо опасен", description: "Осужден к 8 годам лишения свободы со штрафом в размере 3-кратной суммы взятки", article: "Получение взятки", place: "Архангельская область", source: "arh.sledcom.ru" },
+        { id: 28, name: "Бывший работник ГБУЗ", status: "Опасен", description: "Врач получил деньги от пациентки за платную операцию, хотя помощь должна была быть бесплатной", article: "Получение взяток и мошенничество", place: "Архангельск", source: "arh.sledcom.ru" },
+        { id: 29, name: "Главный инженер «Горводоканала»", status: "Особо опасен", description: "Получил 5 лет колонии за взятки на 2,8 млн руб.", article: "Получение взятки", place: "Котлас", source: "arh.mk.ru" },
+        { id: 30, name: "Житель Архангельска (терроризм)", status: "Особо опасен", description: "Приговорен к 11 годам лишения свободы в колонии строгого режима", article: "Участие в деятельности террористической организации", place: "Архангельск", source: "rg.ru" },
+        { id: 31, name: "Житель Архангельской области (стрельба)", status: "Особо опасен", description: "Приговорен к 18 годам 1 месяцу лишения свободы", article: "Посягательство на жизнь сотрудников МВД", place: "Архангельская область", source: "interfax-russia.ru" },
+        { id: 32, name: "Житель Архангельска (наркотики)", status: "Особо опасен", description: "Организовал интернет-магазин по продаже наркотиков, задержан с 300 гр. веществ", article: "ч. 3 ст. 30, п. «а, г» ч. 4 ст. 228.1 УК РФ", place: "Архангельск", source: "региональные СМИ" },
+        { id: 33, name: "Житель Архангельска (убийство)", status: "Особо опасен", description: "Задержан за нанесение смертельного ножевого ранения в драке у гостиницы «Арктика»", article: "Убийство", place: "Архангельск", source: "arh.mk.ru" },
+        { id: 34, name: "Женщина-наркокурьер", status: "Опасен", description: "Работала наркокурьером (закладчицей) для погашения долгов по алиментам", article: "ч. 4 ст. 228.1 УК РФ", place: "Архангельск", source: "echosevera.ru" },
+        { id: 35, name: "Житель Вельска (истязания)", status: "Особо опасен", description: "Систематически истязал свою 10-летнюю падчерицу", article: "п. «г» ч. 2 ст. 117 УК РФ", place: "Вельск", source: "pravdasevera.ru" },
+        { id: 36, name: "Подросток из Няндомы", status: "Особо опасен", description: "Нанес множественные ножевые ранения своей матери и спрятал тело", article: "Убийство", place: "Няндома", source: "1tv.ru" },
+        { id: 37, name: "Северянка (истязания дочери)", status: "Особо опасен", description: "Шесть лет издевалась над дочкой, дело направлено в суд", article: "Истязание несовершеннолетней", place: "Архангельск", source: "arhangelsk.bezformata.com" },
+        { id: 38, name: "Директор УК в Котласе", status: "Опасен", description: "Осуждена за коммерческий подкуп в рамках коррупционной истории в строительном СРО", article: "Коммерческий подкуп", place: "Котлас", source: "echosevera.ru" },
+        { id: 39, name: "Осужденные (принудительные работы)", status: "Опасен", description: "Один осужден к 1 году 7 месяцев принудительных работ, двое — к 2 годам", article: "н/д", place: "Архангельская область", source: "региональные СМИ" },
+        { id: 40, name: "Фигуранты дела «Онежские гаврики»", status: "Безопасен", description: "Оправдательный приговор отменен, дело направлено на новое рассмотрение", article: "н/д", place: "Онега", source: "bc2bc.tv29.ru" },
+        { id: 41, name: "Экс-глава Росреестра (уточнено)", status: "Особо опасен", description: "Вымогал и получил взятку в 8,9 млн руб. за снижение штрафов", article: "Получение взятки", place: "Архангельск", source: "sledcom.ru" },
+        { id: 42, name: "Бывший чиновник Анисимов (2019)", status: "Опасен", description: "Признан виновным в хищении более 1 млн руб. с использованием служебного положения", article: "Хищение путем обмана, злоупотребление доверием", place: "Архангельск", source: "региональные СМИ" },
+        { id: 43, name: "Взяткодатель по делу Анисимова", status: "Опасен", description: "Передавал взятки за фиктивные медзаключения", article: "Дача взятки", place: "Архангельск", source: "bc2bc.tv29.ru" },
+        { id: 44, name: "Фигурант дела о фиктивных медосмотрах", status: "Опасен", description: "Участвовал в схеме фиктивных медосмотров, находится под домашним арестом", article: "Мошенничество", place: "Архангельск", source: "pomorie.ru" },
+        { id: 45, name: "Бизнесмен (взятка Чечерину)", status: "Опасен", description: "Передал Чечерину более 2 млн руб. за заключение договоров", article: "Дача взятки", place: "Котлас", source: "riamo.ru" },
+        { id: 46, name: "Бизнесмен (взятка Чечерину) 2", status: "Опасен", description: "Передал Чечерину более 5,2 млн руб. за заключение договоров", article: "Дача взятки", place: "Котлас", source: "riamo.ru" },
+        { id: 47, name: "Управляющая заводом (взятка Чечерину)", status: "Опасен", description: "Передала Чечерину взятку свыше 2,8 млн руб. за контракты", article: "Дача взятки", place: "Котлас", source: "riamo.ru" },
+        { id: 48, name: "Посредник (дело Чечерина)", status: "Опасен", description: "Выступал посредником при передаче взяток Чечерину", article: "Посредничество во взятке", place: "Котлас", source: "riamo.ru" },
+        { id: 49, name: "ИП (дело Лопанова/Усса)", status: "Опасен", description: "Вступил в сговор с Лопановым и Уссом, передавал взятку", article: "Дача взятки", place: "Архангельская область", source: "gvsu.gov.ru" },
+        { id: 50, name: "Представитель госзаказчика (дело Лопанова/Усса)", status: "Опасен", description: "Передал взятку Лопанову и Уссу в размере 1,5 млн руб.", article: "Дача взятки", place: "Архангельская область", source: "gvsu.gov.ru" },
+        { id: 51, name: "Субподрядчики (дело стройфирмы)", status: "Опасен", description: "Действиями фигурантов причинен ущерб свыше 3,5 млн руб.", article: "Мошенничество", place: "Архангельская область", source: "interfax-russia.ru" }
+      ];
+
+      // ================================================================
+      // 2. КАРТИНКИ: 1.png, 2.png, 3.png, 21.png, nobody.png
+      // ================================================================
+      const imageMap = {
+        1: "1",
+        2: "2",
+        3: "3",
+        21: "21",
+      };
+
+      function getImagePath(id) {
+        const imgName = imageMap[id] || "nobody";
+        return `img/${imgName}.png`;
+      }
+
+      // ================================================================
+      // 3. СОСТОЯНИЕ
+      // ================================================================
+      let currentFilter = "all";
+      let searchQuery = "";
+
+      // ================================================================
+      // 4. РЕНДЕР
+      // ================================================================
+      function renderCards() {
+        const container = document.getElementById("cardsContainer");
+        const search = searchQuery.toLowerCase().trim();
+
+        let filtered = records.filter((rec) => {
+          const matchSearch =
+            rec.name.toLowerCase().includes(search) ||
+            rec.status.toLowerCase().includes(search) ||
+            rec.article.toLowerCase().includes(search) ||
+            rec.description.toLowerCase().includes(search) ||
+            rec.place.toLowerCase().includes(search) ||
+            String(rec.id).includes(search);
+
+          const matchFilter =
+            currentFilter === "all" || rec.status === currentFilter;
+          return matchSearch && matchFilter;
+        });
+
+        document.getElementById("totalCount").textContent = records.length;
+        document.getElementById("visibleCount").textContent = filtered.length;
+
+        if (filtered.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <h3>🔍 Ничего не найдено</h3>
+              <p>Попробуйте изменить параметры поиска или фильтра</p>
+            </div>
+          `;
+          return;
+        }
+
+        filtered.sort((a, b) => a.id - b.id);
+
+        let html = "";
+        filtered.forEach((rec) => {
+          const imgPath = getImagePath(rec.id);
+
+          let badgeClass = "badge-status";
+          if (rec.status === "Безопасен") badgeClass = "badge-safe";
+          else if (rec.status === "Опасен") badgeClass = "badge-dangerous";
+          else if (rec.status === "Особо опасен") badgeClass = "badge-extreme";
+
+          html += `
+            <div class="card">
+              <div class="card-body">
+                <div class="card-image">
+                  <img src="${imgPath}" alt="${rec.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'no-photo\\'>📷<br>Нет фото</div>';" />
+                </div>
+                <div class="card-info">
+                  <div class="card-id">#${String(rec.id).padStart(3, "0")}</div>
+                  <div class="card-name">${rec.name}</div>
+                  <div class="card-detail">
+                    <span class="label">Статус:</span>
+                    <span class="badge ${badgeClass}">${rec.status}</span>
+                  </div>
+                  <div class="card-detail">
+                    <span class="label">Статья:</span>
+                    <span class="value">${rec.article}</span>
+                  </div>
+                  <div class="card-detail">
+                    <span class="label">Место:</span>
+                    <span class="value">${rec.place}</span>
+                  </div>
+                  <div class="card-description">${rec.description}</div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <span class="card-source">📎 <a href="https://${rec.source}" target="_blank">${rec.source}</a></span>
+                <span class="card-id">ID: ${rec.id}</span>
+              </div>
+            </div>
+          `;
+        });
+
+        container.innerHTML = html;
+      }
+
+      // ================================================================
+      // 5. СОБЫТИЯ
+      // ================================================================
+      document.getElementById("searchInput").addEventListener("input", function () {
+        searchQuery = this.value;
+        renderCards();
+      });
+
+      document.querySelectorAll(".filter-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
+          this.classList.add("active");
+          currentFilter = this.dataset.filter;
+          renderCards();
+        });
+      });
+
+      document.getElementById("clearFilter").addEventListener("click", function () {
+        document.getElementById("searchInput").value = "";
+        searchQuery = "";
+        document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
+        document.querySelector('.filter-btn[data-filter="all"]').classList.add("active");
+        currentFilter = "all";
+        renderCards();
+      });
+
+      // ================================================================
+      // 6. ЗАПУСК
+      // ================================================================
+      document.addEventListener("DOMContentLoaded", renderCards);
+    </script>
+  </body>
+</html>
